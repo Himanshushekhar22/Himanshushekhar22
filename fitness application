@@ -1,0 +1,126 @@
+<div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-xl font-semibold mb-6 text-gray-800 text-center">My Activity</h2>
+
+    <div class="mb-6 p-4 border border-gray-200 rounded-lg bg-gradient-to-r from-blue-50 to-transparent">
+        <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="footprints" class="icon text-blue-600"></i>
+                <span class="text-lg font-medium text-gray-700">Daily Steps</span>
+            </div>
+            <span id="step-count" class="text-xl font-bold text-blue-700">0</span>
+        </div>
+        <div class="w-full progress-bg rounded-full h-2.5">
+            <div id="step-progress" class="progress-fill h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+        <p class="text-right text-sm text-gray-500 mt-1">Goal: <span id="step-goal">10,000</span> steps</p>
+    </div>
+
+    <div class="mb-4 p-4 border border-gray-200 rounded-lg bg-gradient-to-r from-green-50 to-transparent">
+        <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-2">
+                 <i data-lucide="activity" class="icon text-green-600"></i>
+                <span class="text-lg font-medium text-gray-700">Weekly Active Minutes</span>
+            </div>
+             <span id="active-minutes" class="text-xl font-bold text-green-700">0</span>
+        </div>
+         <div class="w-full progress-bg rounded-full h-2.5">
+            <div id="minutes-progress" class="progress-fill bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+         <p class="text-right text-sm text-gray-500 mt-1">Goal: <span id="minutes-goal">150</span> mins</p>
+    </div>
+
+    <div class="text-center mt-6">
+        <button id="add-steps-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow transition duration-150 ease-in-out">
+            Simulate Walking (Add 500 Steps)
+        </button>
+    </div>
+</div>
+
+<script>
+    // --- Configuration ---
+    const dailyStepGoal = 10000;
+    const weeklyMinutesGoal = 150;
+
+    // --- Simulated Data ---
+    let currentSteps = 6500; // Example starting steps
+    let currentActiveMinutes = 95; // Example starting minutes
+
+    // --- DOM Elements ---
+    const stepCountEl = document.getElementById('step-count');
+    const stepGoalEl = document.getElementById('step-goal');
+    const stepProgressEl = document.getElementById('step-progress');
+
+    const activeMinutesEl = document.getElementById('active-minutes');
+    const minutesGoalEl = document.getElementById('minutes-goal');
+    const minutesProgressEl = document.getElementById('minutes-progress');
+
+    const addStepsBtn = document.getElementById('add-steps-btn');
+
+    // --- Functions ---
+
+    /**
+     * Updates the UI elements for daily steps.
+     */
+    function updateStepUI() {
+        // Format numbers with commas for readability
+        stepCountEl.textContent = currentSteps.toLocaleString();
+        stepGoalEl.textContent = dailyStepGoal.toLocaleString();
+
+        // Calculate progress percentage (ensure it doesn't exceed 100%)
+        const stepProgressPercent = Math.min((currentSteps / dailyStepGoal) * 100, 100);
+        stepProgressEl.style.width = `${stepProgressPercent}%`;
+
+        // Optional: Change progress bar color when goal is met
+        if (stepProgressPercent >= 100) {
+            stepProgressEl.classList.remove('bg-blue-500');
+            stepProgressEl.classList.add('bg-yellow-400'); // Indicate completion
+        } else {
+            stepProgressEl.classList.add('bg-blue-500');
+            stepProgressEl.classList.remove('bg-yellow-400');
+        }
+    }
+
+    /**
+     * Updates the UI elements for weekly active minutes.
+     */
+    function updateMinutesUI() {
+        activeMinutesEl.textContent = currentActiveMinutes.toLocaleString();
+        minutesGoalEl.textContent = weeklyMinutesGoal.toLocaleString();
+
+        const minutesProgressPercent = Math.min((currentActiveMinutes / weeklyMinutesGoal) * 100, 100);
+        minutesProgressEl.style.width = `${minutesProgressPercent}%`;
+
+         // Optional: Change progress bar color when goal is met
+        if (minutesProgressPercent >= 100) {
+            minutesProgressEl.classList.remove('bg-green-500');
+            minutesProgressEl.classList.add('bg-yellow-400'); // Indicate completion
+        } else {
+            minutesProgressEl.classList.add('bg-green-500');
+            minutesProgressEl.classList.remove('bg-yellow-400');
+        }
+    }
+
+    /**
+     * Simulates adding steps and updates the UI.
+     */
+    function simulateAddSteps() {
+        currentSteps += 500; // Add 500 steps
+        // In a real app, you'd also update active minutes based on activity
+        updateStepUI();
+        // Potentially update minutes too if the walk counts
+        // updateMinutesUI();
+    }
+
+    // --- Initial Setup ---
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Set initial UI state on page load
+    updateStepUI();
+    updateMinutesUI();
+
+    // --- Event Listeners ---
+    addStepsBtn.addEventListener('click', simulateAddSteps);
+
+</script> 
